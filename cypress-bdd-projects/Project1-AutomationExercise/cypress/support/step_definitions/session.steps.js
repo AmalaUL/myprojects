@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
-import Login from "../support/Pages/Login";
-import Cart from "../support/Pages/Cart";
+import Login from "../Pages/Login";
+import Cart from "../Pages/Cart";
 import testData from '../../fixtures/products.json';
 
 const login = new Login();

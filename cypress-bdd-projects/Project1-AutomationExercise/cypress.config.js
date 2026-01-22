@@ -9,20 +9,18 @@ import path from "path";
 dotenv.config();
 
 export default defineConfig({
-  // ✅ Place this block at root level (not inside `e2e`)
-  /*
   "cypress-cucumber-preprocessor": {
-    nonGlobalStepDefinitions: true,
-    stepDefinitions: "cypress/e2e/features/step_definitions"
+    stepDefinitions: "cypress/support/step_definitions/**/*.js"
   },
-*/
+
   e2e: {
     baseUrl: process.env.CYPRESS_APPLICATION_URL,
     env: {
       emailAddress: process.env.CYPRESS_APPLICATION_EMAIL_ADDRESS,
       password: process.env.CYPRESS_APPLICATION_PASSWORD,
     },
-    specPattern: "**/*.feature",
+
+    specPattern: "cypress/e2e/**/*.feature",
 
     async setupNodeEvents(on, config) {
       on("task", {
@@ -31,7 +29,8 @@ export default defineConfig({
         },
       });
 
-      await addCucumberPreprocessorPlugin(on, config); // ✅ required
+      await addCucumberPreprocessorPlugin(on, config);
+
       on(
         "file:preprocessor",
         createBundler({

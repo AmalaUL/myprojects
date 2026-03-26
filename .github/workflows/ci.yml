@@ -15,10 +15,9 @@ jobs:
         run: |
           docker --version
       - name: Build and Run Tests
-        run: |
-          cd docker-projects/MicroService-Demo
+        working-directory: docker-projects/MicroService-Demo
+        run: |      
           docker compose up --build --abort-on-container-exit
       - name: Cleanup
-        run: |
-          cd docker-projects/MicroService-Demo
-          docker compose down -v
+        working-directory: docker-projects/MicroService-Demo
+        run: docker compose down -v

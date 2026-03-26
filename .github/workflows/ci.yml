@@ -14,6 +14,15 @@ jobs:
       - name: Install Docker
         run: |
           docker --version
+      - name: Debug structure
+        run: |
+          pwd
+          ls -R docker-projects/MicroService-Demo
+      - name: Check Dockerfiles
+        run: |
+          ls docker-projects/MicroService-Demo/backend
+          ls docker-projects/MicroService-Demo/frontend
+          ls docker-projects/MicroService-Demo/tests
       - name: Build and Run Tests
         working-directory: docker-projects/MicroService-Demo
         run: |      

@@ -1,0 +1,22 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:  
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4  
+    - name: Install Docker
+      run: |
+        docker--version
+    - name: Build and Run Tests
+      run: |
+        docker compose up --build --abort-on-container-exit
+    - name: Cleanup
+      run: docker compose down -v

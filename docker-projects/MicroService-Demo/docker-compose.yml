@@ -1,0 +1,57 @@
+services:
+  database:
+    image: postgres:15
+    container_name: pt-database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: productsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d productsdb" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build: ./backend
+    #image: product-backend
+    container_name: pt-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: database
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_NAME: productsdb
+      DB_PORT: 5432
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    #image: product-frontend
+    container_name: pt-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  test:
+    build: ./tests
+    #image: product-test
+    container_name: pt-test
+    environment:
+      DB_HOST: database
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_NAME: productsdb
+      DB_PORT: 5432
+      API_URL: http://backend:3000
+      UI_URL: http://frontend:80
+    depends_on:
+      - frontend
+      - backend

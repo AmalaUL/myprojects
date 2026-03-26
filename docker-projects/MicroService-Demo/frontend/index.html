@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Product System</title>
+</head>
+
+<body>
+
+    <h2>Products</h2>
+
+    <button onclick="loadProducts()">Load Products</button>
+
+    <ul id="productList"></ul>
+
+    <h2>Add Product</h2>
+
+    <input id="name" placeholder="Product name">
+    <input id="price" placeholder="Price">
+    <button onclick="addProduct()">Add</button>
+
+    <script>
+        const API_URL = window.location.hostname === 'localhost'
+            ? "http://localhost:3000" : "http://backend:3000";
+
+        async function loadProducts() {
+            const res = await fetch(`${API_URL}/products`);
+            const data = await res.json();
+
+            const list = document.getElementById("productList");
+            list.innerHTML = "";
+
+            data.forEach(p => {
+                const li = document.createElement("li");
+                li.style.display = 'flex';
+                li.style.justifyContent = "space-between";
+                li.style.alignItems = "center";
+                li.style.width = "250px";
+
+                //Text Container
+                const text = document.createElement('span')
+                text.textContent = p.name + " - $" + p.price;
+
+                //DELETE Button 
+                const btnDel = document.createElement('button');
+                btnDel.textContent = "Delete";
+
+                btnDel.onclick = async () => {
+                    await fetch(`${API_URL}/products/${p.id}`, {
+                        method: "DELETE"
+                    });
+
+                    loadProducts();//refresh list
+                }
+
+                //EDIT Button
+                const btnEdit = document.createElement('button');
+                btnEdit.textContent = "Edit";
+
+                btnEdit.onclick = () => {
+                    li.innerHTML = '';
+
+                    //create name
+                    const nameLabel = document.createElement('span');
+                    nameLabel.textContent = p.name;
+                    //create input
+                    const input = document.createElement('input');
+                    input.value = p.price
+                    //create save button
+                    const saveBtn = document.createElement('button');
+                    saveBtn.textContent = "Save";
+
+                    saveBtn.onclick = async () => {
+                        const newPrice = input.value;
+
+                        await fetch(`${API_URL}/products/${p.id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ price: newPrice })
+                        });
+
+                        loadProducts();//refresh list
+                    }
+                    li.appendChild(nameLabel);
+                    li.appendChild(input);
+                    li.appendChild(saveBtn);
+                }
+
+                li.appendChild(text)
+                li.appendChild(btnEdit);
+                li.appendChild(btnDel);
+                list.appendChild(li);
+            });
+        }
+
+        async function addProduct() {
+
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+
+            await fetch(`${API_URL}/products`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, price })
+            });
+
+            loadProducts();
+        }
+
+    </script>
+
+</body>
+
+</html>

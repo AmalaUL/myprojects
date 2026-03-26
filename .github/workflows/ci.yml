@@ -8,18 +8,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4  
-    - name: Install Docker
-      run: |
-        docker--version
-    - name: Build and Run Tests
-      run: |
-        cd docker-projects/MicroService-Demo
-        docker compose up --build --abort-on-container-exit
-    - name: Cleanup
-      run: |
-        cd docker-projects/MicroService-Demo
-        docker compose down -v
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  
+      - name: Install Docker
+        run: |
+          docker--version
+      - name: Build and Run Tests
+        run: |
+          cd docker-projects/MicroService-Demo
+          docker compose up --build --abort-on-container-exit
+      - name: Cleanup
+        run: |
+          cd docker-projects/MicroService-Demo
+          docker compose down -v

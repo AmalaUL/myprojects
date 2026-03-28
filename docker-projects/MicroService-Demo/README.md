@@ -1,6 +1,9 @@
 ### Project Objective
 This project demonstrate end to end testing of product management application using playwright in a dockerized multi-container environment.
 
+## Status: Complete
+This test framework validates UI/API/DB layer using playwright.
+
 ## Architecture
 The application consists of:
 - PostgreSQL database for data storage

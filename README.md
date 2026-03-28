@@ -9,6 +9,7 @@ Welcome to my project portfolio repository! This repo contains mini-projects and
 - [Cypress with BDD Projects](./cypress-with-bdd)
 - [Playwright Projects](./playwright)
 - [Playwright with BDD Projects](./playwright-with-bdd)
+- [Docker Projects](./docker-projects/)
 
 ## Status
 

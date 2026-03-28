@@ -57,9 +57,3 @@ docker compose down -v
 - From local browser:
   Frontend uses → http://localhost:3000
 This difference exists because each container has its own localhost. "Docker compose up --build" is important to run after changing to local browser because Frontend is NOT running on your machine. it is running INSIDE a container.
-
-## Future Improvements
-- Add Environment variable support
-- Integrate with CI/CD pipeline
-- Add API level tests
-- Implement test data tagging strategy 

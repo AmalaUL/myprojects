@@ -1,0 +1,100 @@
+Day 1 and 2:
+1. Created project folder as my-projects->docker-projects->Parabank-BDD 
+2. I ran npm init -> package.json created
+3. installed cucumber using npm install --save-dev @cucumber/cucumber
+4. Installed playwright - npm install playwright@latest( added in package.json but not installed properly)
+5. ran npx cucumber-js to check cucumber installation is properly done (result was 0 scenarios and 0 steps)
+6. Created feature folder -> added login.feature and scenario -> ran npx cucumber-js again.. steps were missing result
+7. Added step definition folder under features -> login.steps.js (added only Given)
+8. created pages folder -> locators and actions for login page
+9. added .env and installed npm install dotenv
+10. created support folder under features -> added hooks file to handle browser launch and close using playwright
+11. created When and Then steps 
+issues:
+ - APP_URL in .env added in quotes (removed later). .env treats as raw string and it considers even quotes is part of URL
+ - I dint create config file and set base url but I tried to use / in code. later modified to process.env.APP_URL
+ - I added USERNAME(john) and PASSWORD in .env. while running the code it takes system name(hrithu) as USERNAME. later I changed to APP_ before username and password. it takes john this time.
+ - I used require to config dotenv and used import for Given and Pages. Landed in Errors like require is not defined, module not found issue. I understood if I use type: module in package.json then import and file extension should be used   everywhere otherwise require. updated require in all places. 
+ - I used modules default Login but it dint work. Updated as module.exports = Login because type=module is not used in package.json
+ - I got error as Cannot find package '@playwright/test. checked npm ls @playwright/test -> result was empty -> again installed playwright using "npm install @playwright/test"
+ - I created constructor alone in login page first and created object instance in steps file. I directly used login.goto(process.env.APP_URL) (thought playwright goto) -> Error: goto is not a function. created goto async function in login page
+ - I identified some of the locators with role based selectors and assigned to variable.
+this.passwordTxt = 'input[name="password"]'; 
+await this.page.fill(this.passwordTxt, process.env.APP_PASSWORD); --works
+this.loginBtn = this.page.getByRole('button', { name: 'Log In' });
+await this.page.click(this.loginBtn); -- Error (page.click: selector: expected string, got object) 
+updated to await this.loginBtn.click() --works 
+ - I got error as Error: Playwright Test did not expect test() to be called here.because I used 
+const expect = require('@playwright/test) -That imports the whole module, not just expect and updated as const {expect} = require('@playwright/test)
+ - hooks - not sure how to launch browser,context,page in Before and closing them in After. this is a keyword which connects them. I used this.page in login object instance. In cucumber, Each scenario gets its own context object. That object is this
+ - got syntax error when I write function inside class in login page file. async function goto() (function was underlined with red color) . I removed function it works fine. 
+
+Day 3: 
+1. added background in feature file to validate valid and invalid login (background runs before every scenario)
+2. added tags as @postive and @negative before each scenarios in feature file. ran npx cucumber-js --tags "@negative" (it picks only negative tagged scenario)
+3. learnt different output formats
+npx cucumber-js --tags "@negative" --format progress -- same as default no change
+npx cucumber-js --tags "@negative" --format summary -- dots were missing and rest all same as default
+npx cucumber-js --tags "@negative" --format @cucumber/pretty-formatter -- it gave scenario lines from feature file which was passed
+npx cucumber-js --tags "@negative" --format json:reports/report.json -- In terminal console same default dot results. but reports folder added with json format for each step  
+
+Day 4:
+1. used inbuilt html reporter. create cucumber.cjs file -> default module -> add format:['html: reports/cucumber-report.html'] 
+2. understood reason of why cucumber does not show exact failure assertion message. playwright keeps retrying until condition is met or default timeout 30s but cucumber default timeout is 5s. so it stops execution and shows function timedout message instead of proper reasoning. 
+
+Day 5:
+1. tried scenario outline - useful when same test need to be run with multiple sets of data.
+2. understood that fill in playwright accept only string. Passing integer need to be converted as string using fill(String(number))
+3. Scenario outline: <variable> in feature --> {} in step definition file (not <>). if variable is integer provide {int} if its text provide {string} in step definition file
+4. Use same background login feature as prerequisite without duplicating step definition
+
+Day 6 & Day 7:
+1. datatable scenario: provide inputs in feature file in 2 columns if using datatable.rowsHash()(It don't accept multiple columns and test will fail)
+2. multiple columns works if using datatable.hashes()[0] (have to give [0] even if one row is given)
+3. tags:
+     - tags are useful to run specific scenarios
+     - OR behavior : --tags "@negative or @profile" --> It runs negative scenario and profile scenario independently (No connection between them)
+     - single tag :  --tags "@profile" - runs only profile scenario 
+     - AND behavior : --tags "@negative and @profile" --> Runs ONLY scenarios having BOTH tag otherwise it states 0 scenarios and 0 steps.
+     - tags do no control execution flow (scenario 1 runs independently and scenario 2 runs independently)
+
+Day 8:
+1. to take screenshot:
+    - add a code in after hook . filepath need to be created manually report/screenshots
+    - const screenshot = this.page.screenshot({path: filePath}). use this.attach to add it to reports folder
+2. CustomWorld Usage:
+    - previously this was auto created empty object by cucumber for every scenario (random object); you don't control structure
+    - after creating CustomWorld --> this refers to instance of CustomWorld (created fresh for every scenario)
+	- new CustomWorld is created 
+        - Scenario 1 --> new CustomWorld(); Scenario 2  --> new CustomWorld();
+        - No sharing between scenarios and shared only withing steps of same scenario (previous this also has same behaviour)
+        - Structured, predictable and scalable
+        - you define what 'this' should look like for every scenario/have control on it
+Day 9:
+1. reports
+    - to get in built html report 
+         - create cucumber.cjs file on root -> add format as html -> basic html report generated without screenshot of failed case
+    - to get screenshot in html report
+         - update format as json in cucumber.cjs file
+         - install plugin npm install multiple-cucumber-html-reporter --save-dev
+         - create report.js file under reports - > configure details through report.generate()
+         - to generate html report manually run node reports/report.js after test run (make sure hooks have script to add screenshot for failed case)
+         - if json file has embeddings then screenshot is captured in report otherwise hook(attach) does not work. 
+
+Day 10 to 14:
+1. fixed update profile flaky issue.
+         - received first name and last name is mandatory even though its already filled. updating value of them removes this error.
+         - after clicking update profile -> nothing happens -> no success or error message
+             - tried with promise.race for either success/error --> does not work
+             - tried with promise.all for updateProfile click and wait --> does not work
+             - clears each input field separately before filling input value --> does not solve issue
+             - added assertion for update profile button to be enabled --> does not help
+	     - added assertion for few input fields to ensure page is loaded --> does not help
+             - added wait for and more assertion for success page --> no change
+	     - replaced fill with type -> resolved issue (type update each key stroke and triggers real update)
+2. Run docker with tags:
+         - docker run --rm -v${PWD}/reports:/app/reports parabank-bdd --tags '@profile" 
+             - it replaces with CMD line in Docker file and does not run test case without npx cucumber-js
+             - if you want to run specific tag cases you have to provide npx cucumber-js --tags "@profile" in docker run if Dockerfile has only CMD
+	       
+	 - if you want to run Docker without providing npx cucumber-js then Dockerfile must have ENTRYPOINT as npx cucumber-js and --tags @"profile" replaces CMD line in Dockerfile		

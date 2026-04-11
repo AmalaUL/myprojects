@@ -6,7 +6,7 @@ on:
   pull_request:  
 
 jobs:
-  test:
+  microservice-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,3 +30,33 @@ jobs:
       - name: Cleanup
         working-directory: docker-projects/MicroService-Demo
         run: docker compose down -v
+
+  parabank-bdd-tests:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout code
+      - uses: actions/checkout@4
+
+      - name: Build Docker image
+        working-directory: docker-projects/Parabank-BDD
+        run: |
+          docker build -t parabank-bdd .
+
+      - name: Run Tests
+        working-directory: docker-projects/Parabank-BDD
+        run: |
+          mkdir -p reports
+          docker run --rm \
+            -v ${{github.workspace}}/docker-projects/Parabank-BDD/reports:/app/reports \
+            parabank-bdd
+
+      - name: Generate HTML reports
+        working-directory: docker-projects/Parabank-BDD
+        run: |
+          node reports/report.js
+      
+      - name: Upload report
+        uses: actions/Upload-artifact@v4
+        with:
+          name: parabank-bdd-report
+          path: docker-projects/Parabank-BDD/reports

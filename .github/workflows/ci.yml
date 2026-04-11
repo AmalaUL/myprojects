@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout code
-      - uses: actions/checkout@4
+        uses: actions/checkout@4
 
       - name: Build Docker image
         working-directory: docker-projects/Parabank-BDD
@@ -47,7 +47,7 @@ jobs:
         run: |
           mkdir -p reports
           docker run --rm \
-            -v ${{github.workspace}}/docker-projects/Parabank-BDD/reports:/app/reports \
+            -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
             parabank-bdd
 
       - name: Generate HTML reports
@@ -56,7 +56,7 @@ jobs:
           node reports/report.js
       
       - name: Upload report
-        uses: actions/Upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: parabank-bdd-report
           path: docker-projects/Parabank-BDD/reports

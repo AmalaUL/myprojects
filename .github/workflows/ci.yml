@@ -48,6 +48,9 @@ jobs:
           mkdir -p reports
           docker run --rm \
             -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
+            -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
+            -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
+            -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
             parabank-bdd
 
       - name: Generate HTML reports

@@ -36,6 +36,10 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        working-directory: docker-projects/Parabank-BDD
+        run: npm install
 
       - name: Build Docker image
         working-directory: docker-projects/Parabank-BDD

@@ -69,3 +69,10 @@ jobs:
         with:
           name: parabank-bdd-report
           path: docker-projects/Parabank-BDD/reports
+
+      - name: Deploy report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docker-projects/Parabank-BDD/reports/html-report

@@ -69,7 +69,7 @@ jobs:
             -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
             -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
             -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
-            parabank-bdd -- --tags "@smoke"
+            parabank-bdd --tags "@smoke"
           fi
 
       - name: Generate HTML reports

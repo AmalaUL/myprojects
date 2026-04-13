@@ -3,7 +3,8 @@ name: Run Tests
 on:
   push:
     branches: [main]
-  pull_request:  
+  schedule:  
+    - cron: '0 0 * * *' #nightly
 
 permissions:
   contents: write
@@ -53,12 +54,23 @@ jobs:
         working-directory: docker-projects/Parabank-BDD
         run: |
           mkdir -p reports
+          if["${{ github.event_name }}" = "schedule"]; then
+          echo "Running full suite..."
           docker run --rm \
             -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
             -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
             -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
             -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
             parabank-bdd
+            else
+            echo "Running smoke tests..."
+            docker run --rm \
+            -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
+            -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
+            -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
+            -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
+            parabank-bdd -- --tags "@smoke"
+            fi
 
       - name: Generate HTML reports
         if: always()

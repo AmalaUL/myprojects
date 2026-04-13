@@ -54,15 +54,15 @@ jobs:
         working-directory: docker-projects/Parabank-BDD
         run: |
           mkdir -p reports
-          if["${{ github.event_name }}" = "schedule"]; then
-          echo "Running full suite..."
-          docker run --rm \
-            -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
-            -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
-            -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
-            -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
-            parabank-bdd
-            else
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Running full suite..."
+            docker run --rm \
+              -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
+              -e APP_URL=${{ secrets.PARABANK_BDD_BASE_URL }} \
+              -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
+              -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
+              parabank-bdd
+          else
             echo "Running smoke tests..."
             docker run --rm \
             -v ${{ github.workspace }}/docker-projects/Parabank-BDD/reports:/app/reports \
@@ -70,7 +70,7 @@ jobs:
             -e APP_USERNAME=${{ secrets.PARABANK_BDD_USERNAME }} \
             -e APP_PASSWORD=${{ secrets.PARABANK_BDD_PASSWORD }} \
             parabank-bdd -- --tags "@smoke"
-            fi
+          fi
 
       - name: Generate HTML reports
         if: always()

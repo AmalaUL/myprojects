@@ -4,7 +4,7 @@ Feature: Login
   Background: 
     Given I open the parabank login page
 
-  @positive @login
+  @positive @login @smoke
   Scenario: Successful Login
     When I enter valid username and password
     Then I see account overview page

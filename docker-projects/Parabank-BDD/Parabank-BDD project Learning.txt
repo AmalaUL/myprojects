@@ -97,4 +97,15 @@ Day 10 to 14:
              - it replaces with CMD line in Docker file and does not run test case without npx cucumber-js
              - if you want to run specific tag cases you have to provide npx cucumber-js --tags "@profile" in docker run if Dockerfile has only CMD
 	       
-	 - if you want to run Docker without providing npx cucumber-js then Dockerfile must have ENTRYPOINT as npx cucumber-js and --tags @"profile" replaces CMD line in Dockerfile		
+	 - if you want to run Docker without providing npx cucumber-js then Dockerfile must have ENTRYPOINT as npx cucumber-js and --tags @"profile" replaces CMD line in Dockerfile
+
+Day 15 to 17:
+1. run smoke case for every push and rest all for nightly. use below command in YAML (bash code) 
+	- use cron '0 0 * * *' #nightly
+	- use if [condition] ; then 
+		#code
+	      else
+		#code
+	      fi # stop block				
+2. to check what cases is picked for execution using --dry-run
+	npx cucumber-js --tags @smoke --dry-run 

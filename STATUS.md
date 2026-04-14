@@ -8,16 +8,17 @@
 - Project1-AutomationExercise - ✔ Completed
 - Project2-OrangeHRMDemo - ✔ Completed
 - Project3-DummyRESTAPI - ✔ Completed
-- Project4-PublicTodoApp - 🚧 In Progress (add README file)
-
+- Project4-PublicTodoApp - ✔ Completed
 
 ## javascript-projects
 - Day 1-WordCounterApp - ✔ Completed
 - Day 2-PasswordStrengthChecker - ✔ Completed
-- Day 3-ExpenseTracker - 🚧 In Progress (add README file)
-- Day 4-SearchAutocompleteComponent - 🚧 In Progress (add README file)
+- Day 3-ExpenseTracker - ✔ Completed
+- Day 4-SearchAutocompleteComponent - ✔ Completed
 
-## playwright-bdd-projects (projects are yet to be created)
+## docker-projects (projects are yet to be created)
+- MicroService-Demo - ✔ Completed
+- Parabank-BDD - ✔ Completed
 
 ## playwright-projects
 - Project1-AutomationExercise - ✔ Completed

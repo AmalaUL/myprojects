@@ -25,7 +25,7 @@ export default defineConfig({
     async setupNodeEvents(on, config) {
       on("task", {
         fileExists(filePath) {
-          return fs.existsSync(path.join(__dirname, filePath));
+          return fs.existsSync(path.resolve(filePath));
         },
       });
 

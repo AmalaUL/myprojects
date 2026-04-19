@@ -1,6 +1,9 @@
-Feature: check session persistance
+Feature: Session persistance
 
-  Scenario: check the application is alive even after refresh the page
-    Given I login as valid user
-    When I add some products
-    Then I reload and cookies remain the same
+  Scenario: User session persists after page reload
+    Given a logged-in user
+    When the user adds products to the cart
+    And reloads the page
+    Then the user should remain logged in 
+    And the cart should retain the added products
+    

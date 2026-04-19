@@ -10,11 +10,11 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^22.2.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
-    "cypress": "^14.5.2",
+    "@badeball/cypress-cucumber-preprocessor": "^22.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
+    "cypress": "^13.17.0",
     "cypress-file-upload": "^5.0.8",
     "dotenv": "^17.2.0",
-    "esbuild": "^0.25.8"
+    "esbuild": "^0.19.0"
   }
 }

@@ -1,7 +1,7 @@
 # Project Status Overview
 
 ## cypress-bdd-projects
-- Project1-AutomationExercise - 🚧 In Progress (2 Features are pending)
+- Project1-AutomationExercise - ✔ Completed
 - Project2-TodoApp - 🚧 In Progress (4 Features are pending)
 
 ## cypress-projects

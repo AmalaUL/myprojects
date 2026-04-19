@@ -6,30 +6,45 @@ import testData from '../../fixtures/products.json';
 const login = new Login();
 const cart = new Cart();
 
-Given('I login as valid user', () => {
+Given('a logged-in user', () => {
     cy.login();
 })
 
-When('I add some products', () => {
+When('the user adds products to the cart', () => {
     cy.addProductsToCart(testData.brandName);
     login.navLink().contains('Cart').click();
     cart.cartDescription().should('be.visible');
 })
 
-Then('I reload and cookies remain the same', () => {
-    cy.getCookie('sessionid').should('exist').and('have.property', 'value')
-        .then((cookie) => {
-            cy.log('Before Cookie:', cookie); // This logs the string session id
-            const beforeSessionId = cookie;
-            // no cookie.value here
-            cy.reload();
-            cy.getCookie('sessionid').should('exist').and('have.property', 'value')
-                .then((cookie) => {
-                    cy.log('After Cookie:', cookie);
-                    const afterSessionId = cookie;
+//let beforeSessionId;
+When('reloads the page', () => {
+    // cy.getCookie('sessionid').should('exist').and('have.property', 'value')
+    //     .then((cookie) => {
+    //         cy.log('Before Cookie:', cookie); // This logs the string session id
+    //         beforeSessionId = cookie;
+    //         // no cookie.value here
+    //         cy.reload();
 
-                    expect(afterSessionId).to.eq(beforeSessionId);
-                    cart.cartDescription().should('be.visible');
-                })
-        });
+    //     })
+    cy.getCookie('sessionid').should('exist').its('value').as('beforeSessionId');
+    cy.reload();
 })
+
+Then('the user should remain logged in', () => {
+    // cy.getCookie('sessionid').should('exist').and('have.property', 'value')
+    //     .then((cookie) => {
+    //         cy.log('After Cookie:', cookie);
+    //         const afterSessionId = cookie;
+
+    //         expect(afterSessionId).to.eq(beforeSessionId);
+    //     })
+    cy.get('@beforeSessionId').then((beforeSessionId) => {
+        cy.getCookie('sessionid').should('exist').its('value').should('eq', beforeSessionId)
+    })
+})
+
+Then('the cart should retain the added products', () => {
+    cart.cartDescription().should('be.visible');
+
+})
+

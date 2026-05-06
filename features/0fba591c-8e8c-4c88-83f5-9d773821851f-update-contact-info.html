@@ -848,21 +848,21 @@ body.darkmode .navbar-text {
                     
                         <i class="fa fa-tag fa-lg"></i>
                         
-                            <span class="tag">@smoke</span>
+                            <span class="tag">@profile</span>
                         
                     
                 
             </div>
             <h1>Feature:
-                <small>Open new account</small>
+                <small>Update Contact Info</small>
             </h1>
             
                 <p>
                <p><strong>File name:</strong>
-                    open.new.account.feature
+                    update.contactinfo.feature
                 </p>
                 <p><strong>Relative path:</strong>
-                    features/open.new.account.feature</p>
+                    features/update.contactinfo.feature</p>
             
         </div>
 
@@ -1048,13 +1048,13 @@ body.darkmode .navbar-text {
                         
                             <i class="fa fa-tag fa-lg"></i>
                             
-                                <span class="tag">@smoke</span>
+                                <span class="tag">@profile</span>
                             
                         
                     
                 </div>
 
-                <h2>Scenario: <small>Create new savings account</small></h2>
+                <h2>Scenario: <small>update profile of logged in username</small></h2>
 
                 <ul class="nav navbar-right panel_toolbox">
                     <li>
@@ -1295,7 +1295,7 @@ body.darkmode .navbar-text {
                                     <span class="keyword highlight">Given </span>
 
                                     
-                                        I go to Open new account page
+                                        I go to update contact info page
                                         
                                     
 
@@ -1359,7 +1359,7 @@ body.darkmode .navbar-text {
                                     <span class="keyword highlight">When </span>
 
                                     
-                                        I select account type and open new account
+                                        I update profile form with
                                         
                                     
 
@@ -1403,6 +1403,55 @@ body.darkmode .navbar-text {
                         
 
                         
+                            
+                                <div class="scenario-scroll-bar">
+                                    
+                                        <table class="table arguments">
+                                            
+                                            <tr>
+                                                
+                                                
+                                                    <th>firstName</th>
+                                                
+                                                    <th>lastName</th>
+                                                
+                                                    <th>address</th>
+                                                
+                                                    <th>city</th>
+                                                
+                                                    <th>state</th>
+                                                
+                                                    <th>zipCode</th>
+                                                
+                                                    <th>phone</th>
+                                                
+                                            </tr>
+
+                                            
+                                                <tr>
+                                                    
+                                                    
+                                                        <td>John</td>
+                                                    
+                                                        <td>Smith</td>
+                                                    
+                                                        <td>123 Maple Street</td>
+                                                    
+                                                        <td>Austin</td>
+                                                    
+                                                        <td>Texas</td>
+                                                    
+                                                        <td>73301</td>
+                                                    
+                                                        <td>5125559021</td>
+                                                    
+                                                </tr>
+                                            
+                                        </table>
+                                    
+                                </div>
+
+                                
                             
                         
 
@@ -1423,7 +1472,7 @@ body.darkmode .navbar-text {
                                     <span class="keyword highlight">Then </span>
 
                                     
-                                        I should see success message
+                                        I should see sucessful message
                                         
                                     
 
@@ -1467,6 +1516,26 @@ body.darkmode .navbar-text {
                         
 
                         
+                            
+                                <div class="scenario-scroll-bar">
+                                    
+                                        <table class="table arguments">
+                                            
+                                            <tr>
+                                                
+                                                
+                                                    <th>message</th>
+                                                
+                                                    <th>Your updated address and phone number have been added to the system.</th>
+                                                
+                                            </tr>
+
+                                            
+                                        </table>
+                                    
+                                </div>
+
+                                
                             
                         
 
